@@ -45,6 +45,7 @@ RUN apt-get update && apt-get install -y \
     dos2unix \
     p7zip-full \
     winbind \
+    xvfb \
     zip \
  && rm -rf /var/lib/apt/lists/*
 
@@ -61,9 +62,16 @@ RUN ls -l $WINEPREFIX
 RUN umask $WINE_UMASK && winetricks -q dotnet472
 RUN umask $WINE_UMASK && winetricks win10
 
+# install VC runtime or else some stuff may break
+# RUN umask $WINE_UMASH && winetricks -q vcrun2017
+RUN set -xe						&& \
+	WINEDLLOVERRIDES="mscoree,mshtml=" xvfb-run wine wineboot && \
+	xvfb-run wineserver -w 		&& \
+	xvfb-run winetricks -q vcrun2017
+
 # make a tools dir
 RUN umask $WINE_UMASK && mkdir -p $WINEPREFIX/drive_c/tools/bin
-ENV WINEPATH C:\\tools\\bin
+ENV WINEPATH C:\\tools\\bin;C:\\windows\\system32
 
 # install which in wine (for easy path debugging)
 RUN umask $WINE_UMASK && \
