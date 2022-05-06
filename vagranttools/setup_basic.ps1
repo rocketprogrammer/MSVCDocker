@@ -67,7 +67,7 @@ $subinaclUrl="https://web.archive.org/web/20190830103837/https://download.micros
 echo $subinaclUrl
 (New-Object System.Net.WebClient).DownloadFile($subinaclUrl, $subinaclArchivePath)
 $subinaclHash = (Get-FileHash $subinaclArchivePath -Algorithm MD5).Hash
-$subinaclExpectedHash = "B23D3E0E4BE5BA7DA3F0F12E327751CD"
+$subinaclExpectedHash = "3E4C0793CC6899F66FD1BC3311EA165D"
 echo checking hashes $subinaclHash =? $subinaclExpectedHash
 If ($subinaclHash -eq $subinaclExpectedHash) {
     Start-Process -FilePath msiexec -ArgumentList '/i',"$subinaclArchivePath",'/q' -Wait
