@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
                              '--cpuexecutioncap', '100'
                             ]
 
-                v.memory = 16000
+                v.memory = 16384
 
                 # set the vm's cpus to the number of host cpus
                 if RUBY_PLATFORM.downcase.include? "darwin"
